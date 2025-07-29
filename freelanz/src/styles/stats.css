@@ -1,0 +1,18 @@
+.stats .stats-item {
+    padding: 10px;
+  }
+  
+  .stats .stats-item i {
+    font-size: 44px;
+    color: var(--accent-color);
+    line-height: 0;
+    margin-right: 15px;
+  }
+  
+  .stats .stats-item .purecounter {
+    color: var(--heading-color);
+    font-size: 40px;
+    display: block;
+    font-weight: 700;
+    line-height: 40px;
+  }

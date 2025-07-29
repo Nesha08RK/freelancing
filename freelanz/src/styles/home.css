@@ -1,0 +1,541 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.header {
+  background: rgb(12, 12, 12);
+  padding: 15px 0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  height: 80px;
+}
+
+.logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.sitename {
+  color: #d68a33;
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.sitename span {
+  color: #d68a33;
+}
+
+.navmenu {
+  display: flex;
+  align-items: center;
+}
+
+.navmenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navmenu ul li {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navmenu ul li a {
+  text-decoration: none;
+  color: #f1ecec;
+  padding: 10px 15px;
+  transition: 0.3s;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.navmenu ul li a:hover {
+  color: #d68a33;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  text-decoration: none;
+  color: white;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background: rgb(14, 13, 13);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 0;
+  margin-top: 5px;
+  width: 200px;
+  border-radius: 5px;
+  display: none;
+  flex-direction: column;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  text-align: left;
+}
+
+.dropdown-menu li:last-child {
+  border-bottom: none;
+}
+
+.dropdown-menu li a {
+  text-decoration: none;
+  color: #f1ecec;
+  display: block;
+  padding: 8px 12px;
+  transition: 0.3s;
+}
+
+.dropdown-menu li a:hover {
+  color: #bc6b42;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto; /* Dynamic height to extend to footer */
+  width: 100%;
+  position: relative;
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+#hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)); /* Improved contrast */
+  backdrop-filter: blur(8px); /* Increased blur for better effect */
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1;
+}
+
+#hero > * {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h2 {
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Added shadow for readability */
+}
+
+.hero p {
+  font-size: 22px;
+  opacity: 0.9;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Added shadow for readability */
+}
+
+.hero .animated-text {
+  animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-overlay {
+  position: relative;
+  width: 100%;
+  min-height: 100vh; /* Ensure full height */
+  padding: 120px 0 80px 0;
+}
+
+footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  background: #000;
+  color: white;
+  margin-top: 0; /* Removed margin to eliminate gap */
+}
+
+@media (max-width: 992px) {
+  .navmenu {
+    display: none;
+    flex-direction: column;
+    background: rgb(10, 10, 10);
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .navmenu ul {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+  }
+
+  .navmenu ul li {
+    width: 100%;
+  }
+
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    width: 100%;
+  }
+}
+
+.hero .icon-box {
+  padding: 20px;
+  transition: ease-in-out 0.3s;
+  border: 2px solid #ddd;
+  background: rgba(0, 0, 0, 0.3);
+  height: 150px;
+  width: 150px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.hero .icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: none;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.hero .icon-box i {
+  font-size: 28px;
+  color: white;
+}
+
+.hero .icon-box h3 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.hero .icon-box h3 a {
+  color: white;
+  text-decoration: none;
+}
+
+.hero .icon-box:hover {
+  border-color: #ff5e14;
+  background: rgba(255, 94, 20, 0.2);
+}
+
+.hero .icon-box:hover h3 a {
+  color: #bc6b42;
+}
+
+@media (max-width: 768px) {
+  .hero h2 {
+    font-size: 36px;
+  }
+  .hero p {
+    font-size: 18px;
+  }
+  .col-xl-2 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+/* Ensure navbar buttons align properly */
+.btn-outline-light {
+  color: #f1ecec;
+  border-color: #f1ecec;
+}
+
+.btn-outline-light:hover {
+  color: #d68a33;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.five-cols {
+  display: flex;
+  flex-wrap: nowrap; /* Don't allow wrapping */
+  justify-content: space-between;
+}
+
+.five-cols .custom-col {
+  flex: 1;
+  max-width: 18%; /* Slightly less than 20% to fit all 5 in one row */
+  margin: 0 5px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .five-cols {
+    flex-wrap: wrap;
+  }
+  .five-cols .custom-col {
+    max-width: 45%; /* Two in a row for tablets */
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .five-cols .custom-col {
+    max-width: 100%; /* One per row for mobiles */
+  }
+}
+
+/* Freelancer Jobs Section */
+.freelancer-jobs {
+  background-color: #f0e8e8; /* Light background */
+  min-height: 100vh; /* Full viewport height */
+  padding-top: 100px; /* Account for fixed header */
+}
+
+/* Jobs Layout Wrapper */
+.jobs-layout {
+  display: flex; /* Force side-by-side layout */
+  flex-wrap: nowrap; /* Prevent wrapping on large screens */
+  gap: 20px; /* Space between columns */
+  width: 100%; /* Ensure full width */
+}
+
+/* Job List Container */
+.job-list-container {
+  flex: 1; /* Take available space */
+  min-width: 0; /* Prevent overflow */
+}
+
+/* Proposal Container */
+.proposal-container {
+  flex: 1; /* Take available space */
+  min-width: 0; /* Prevent overflow */
+}
+
+/* Job List */
+.job-list {
+  max-height: 600px; /* Scrollable height */
+  overflow-y: auto; /* Enable scrolling */
+  padding-right: 10px; /* Space for scrollbar */
+}
+
+/* Individual Job Item */
+.job-item {
+  background-color: #ffffff; /* White background */
+  border: 1px solid #e0e0e0; /* Light border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Inner spacing */
+  margin-bottom: 15px; /* Space between jobs */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  cursor: pointer; /* Indicate clickability */
+  transition: all 0.3s ease; /* Smooth transitions */
+}
+
+.job-item:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Hover shadow */
+  transform: translateY(-2px); /* Slight lift */
+}
+
+.job-item.selected {
+  background-color: #e9f4ff; /* Light blue for selected */
+  border-color: #007bff; /* Blue border */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); /* Glow effect */
+}
+
+.job-item h4 {
+  font-size: 1.25rem; /* Title size */
+  font-weight: 600; /* Bold title */
+  margin-bottom: 10px; /* Space below title */
+  color: #333; /* Dark text */
+}
+
+.job-item p {
+  margin: 5px 0; /* Paragraph spacing */
+  font-size: 0.95rem; /* Smaller text */
+  color: #555; /* Medium gray */
+}
+
+.job-item p strong {
+  color: #333; /* Darker labels */
+}
+
+/* Proposal Form Box */
+.proposal-form-box {
+  background-color: #ffffff; /* White background */
+  border: 1px solid #e0e0e0; /* Light border */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 20px; /* Inner spacing */
+}
+
+/* Proposal Placeholder */
+.proposal-placeholder {
+  background-color: #ffffff; /* White background */
+  border: 1px solid #e0e0e0; /* Light border */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 20px; /* Inner spacing */
+  text-align: center;
+}
+
+.proposal-placeholder p {
+  font-size: 1rem; /* Placeholder text size */
+  color: #666; /* Gray text */
+  margin: 0; /* Center text */
+}
+
+/* Form Styling */
+.proposal-form-box h3 {
+  font-size: 1.5rem; /* Form title size */
+  font-weight: 600; /* Bold title */
+  color: #333; /* Dark text */
+}
+
+.form-group label {
+  font-weight: 500; /* Slightly bold labels */
+  color: #333; /* Dark text */
+}
+
+.form-control {
+  border-radius: 5px; /* Rounded input corners */
+  border: 1px solid #ced4da; /* Bootstrap default border */
+}
+
+.form-control:focus {
+  border-color: #007bff; /* Blue border on focus */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Bootstrap focus shadow */
+}
+
+.btn-primary {
+  border-radius: 5px; /* Rounded button */
+  padding: 10px; /* Comfortable padding */
+}
+
+/* Scrollbar Styling (Webkit) */
+.job-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.job-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.job-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.job-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Error and Success Messages */
+.error-message {
+  color: #dc3545; /* Bootstrap danger */
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.success-message {
+  color: #28a745; /* Bootstrap success */
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991px) {
+  .jobs-layout {
+    flex-wrap: wrap; /* Allow stacking on smaller screens */
+  }
+
+  .job-list-container {
+    margin-bottom: 30px; /* Space between stacked sections */
+  }
+
+  .proposal-container {
+    margin-bottom: 30px; /* Space below proposal section */
+  }
+
+  .job-list {
+    max-height: 400px; /* Smaller scroll height */
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title h2 {
+    font-size: 1.75rem; /* Smaller heading */
+  }
+
+  .section-title p {
+    font-size: 0.9rem; /* Smaller subtitle */
+  }
+
+  .job-item {
+    padding: 15px; /* Reduced padding */
+  }
+
+  .proposal-form-box {
+    padding: 15px; /* Reduced padding */
+  }
+
+  .proposal-placeholder {
+    padding: 15px; /* Reduced padding */
+  }
+}

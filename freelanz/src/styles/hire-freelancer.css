@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+.hire-freelancer {
+  font-family: 'Poppins', sans-serif;
+  background: #f2ecec;
+  padding: 120px 0 80px 0;
+  min-height: 100vh;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.section-title p {
+  font-size: 1.1rem;
+  color: #4b5563;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.error-message {
+  color: #dc3545;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.no-jobs {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #4b5563;
+}
+
+.no-jobs a {
+  color: #ffc107;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.no-jobs a:hover {
+  text-decoration: underline;
+}
+
+.jobs-list {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.job-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #ffc107;
+}
+
+.job-card h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 1rem;
+}
+
+.job-card p {
+  font-size: 1rem;
+  color: #4b5563;
+  margin: 0.5rem 0;
+}
+
+.job-card h4 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.proposals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.proposal-card {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  transition: box-shadow 0.3s ease;
+}
+
+.proposal-card.pending {
+  border-left: 4px solid #ffc107;
+}
+
+.proposal-card.approved {
+  border-left: 4px solid #28a745;
+  background: #e6f4ea;
+}
+
+.proposal-card.ignored {
+  border-left: 4px solid #dc3545;
+  background: #f8d7da;
+}
+
+.proposal-card p {
+  font-size: 1rem;
+  color: #4b5563;
+  margin: 0.5rem 0;
+}
+
+.proposal-card p strong {
+  color: #343a40;
+}
+
+.proposal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.approve-btn {
+  background: #28a745;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.approve-btn:hover {
+  background: #218838;
+  transform: scale(1.05);
+}
+
+.ignore-btn {
+  background: #dc3545;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.ignore-btn:hover {
+  background: #c82333;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .hire-freelancer {
+    padding: 80px 0 60px 0;
+  }
+
+  .section-title h2 {
+    font-size: 2rem;
+  }
+
+  .section-title p {
+    font-size: 1rem;
+  }
+
+  .job-card {
+    padding: 1.5rem;
+  }
+
+  .job-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .job-card h4 {
+    font-size: 1.3rem;
+  }
+
+  .proposal-card {
+    padding: 1rem;
+  }
+
+  .proposal-card p {
+    font-size: 0.9rem;
+  }
+
+  .proposal-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .approve-btn,
+  .ignore-btn {
+    padding: 0.5rem 1rem;
+  }
+}

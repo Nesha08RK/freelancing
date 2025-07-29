@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+.submit-proposal {
+  font-family: 'Poppins', sans-serif;
+  background: #f2ecec;
+  padding: 120px 0 80px 0;
+  min-height: 100vh;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.section-title p {
+  font-size: 1.1rem;
+  color: #4b5563;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.error-message {
+  color: #dc3545;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.success-message {
+  color: #28a745;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.jobs-list {
+  max-width: 900px;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
+
+.job-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #ffc107;
+}
+
+.job-card h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 1rem;
+}
+
+.job-card p {
+  font-size: 1rem;
+  color: #4b5563;
+  margin: 0.5rem 0;
+}
+
+.apply-btn {
+  background: linear-gradient(90deg, #ffc107, #ffca2c);
+  color: #343a40;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.apply-btn:hover {
+  background: linear-gradient(90deg, #ffca2c, #ffd43b);
+  transform: scale(1.05);
+}
+
+.proposal-form {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+.proposal-form h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #343a40;
+  background: #f9fafb;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #ffc107;
+  box-shadow: 0 0 8px rgba(255, 193, 7, 0.3);
+}
+
+.submit-btn {
+  background: linear-gradient(90deg, #ffc107, #ffca2c);
+  color: #343a40;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(90deg, #ffca2c, #ffd43b);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .submit-proposal {
+    padding: 80px 0 60px 0;
+  }
+
+  .section-title h2 {
+    font-size: 2rem;
+  }
+
+  .section-title p {
+    font-size: 1rem;
+  }
+
+  .job-card {
+    padding: 1.5rem;
+  }
+
+  .job-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .apply-btn {
+    padding: 0.5rem 1rem;
+  }
+
+  .proposal-form {
+    padding: 1.5rem;
+  }
+
+  .proposal-form h3 {
+    font-size: 1.5rem;
+  }
+
+  .form-input {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .submit-btn {
+    padding: 0.5rem 1.5rem;
+  }
+}

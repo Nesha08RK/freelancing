@@ -1,0 +1,97 @@
+.top-freelancers-section {
+  padding: 60px 20px;
+  background-color: #f0e8e8;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.portfolio-header h1 {
+  font-size: 24px;
+  color: #333;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.portfolio-header h2 {
+  font-size: 48px;
+  color: #000;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+.freelancer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.freelancer-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.freelancer-card:hover {
+  transform: translateY(-5px);
+}
+
+.freelancer-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.freelancer-info h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.freelancer-title {
+  color: z#666;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.freelancer-description {
+  display: none; /* Hide by default */
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.6;
+  padding: 10px 0;
+}
+
+.freelancer-card:hover .freelancer-description {
+  display: block; /* Show on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .freelancer-grid {
+    grid-template-columns: 1fr;
+  }
+  .freelancer-card:hover .freelancer-description {
+    display: none; /* Disable hover on mobile for better usability */
+  }
+  .freelancer-description {
+    display: block; /* Show description statically on mobile */
+  }
+}
