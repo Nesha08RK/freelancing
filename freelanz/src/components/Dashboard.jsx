@@ -3,6 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/dashboard-dark.css"; // dark dashboard styles
 import "bootstrap-icons/font/bootstrap-icons.css";
+import API_BASE_URL from "../config";
+
+const res = await fetch(`${API_BASE_URL}/api/dashboard`, {
+  headers: { Authorization: `Bearer ${token}` },
+});
 
 function Dashboard() {
   const { user, logout } = useAuth();
@@ -34,7 +39,7 @@ function Dashboard() {
         setLoading(false);
         return;
       }
-      const res = await fetch("/api/dashboard", {
+      const res = await fetch("https://freelancing-marketplace-icrk.onrender.com/api/dashboard", {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       });
       const json = await res.json();
@@ -72,7 +77,7 @@ function Dashboard() {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("/api/project/status", {
+      const res = await fetch("https://freelancing-marketplace-icrk.onrender.com/api/project/status", {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

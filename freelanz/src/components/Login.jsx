@@ -2,25 +2,32 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/home.css";
+import API_BASE_URL from "../config";
 import { useAuth } from "../context/AuthContext";
+
+const BACKEND = "https://freelancing-marketplace-icrk.onrender.com";
+import API_BASE_URL from "../config";
+
+const res = await fetch(`${API_BASE_URL}/api/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email, password }),
+});
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState("");
-  const { login, user } = useAuth();
+  const { user } = useAuth(); // we keep this so UI reacts to auth changes elsewhere
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect after login once user is set
+    // Redirect after login once user is set (if auth context sets it)
     if (user) {
-      console.log("User after login:", user);
-      if (user.role === 'freelancer') {
-        navigate("/freelancer-home");
-      } else {
-        navigate("/");
-      }
+      if (user.role === "freelancer") navigate("/freelancer-home");
+      else navigate("/");
     }
   }, [user, navigate]);
 
@@ -31,14 +38,39 @@ const Login = () => {
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
-      console.log("Submitting login with:", { email, password });
-      const success = await login(email, password);
-      console.log("Login success:", success);
-      if (!success) {
-        setError("Invalid credentials. Please try again.");
-      } else {
-        const token = localStorage.getItem('token');
-        console.log("Stored token:", token);
+      try {
+        // call production backend directly
+        const res = await fetch(`${BACKEND}/api/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email.trim().toLowerCase(), password: password }),
+        });
+
+        const json = await res.json();
+
+        if (!res.ok) {
+          // show server-provided message if available
+          setError(json.message || "Invalid credentials. Please try again.");
+        } else {
+          // expected response: { token, user: { id, fullName, email, role } }
+          const { token, user: userObj } = json;
+
+          if (!token || !userObj) {
+            setError("Login succeeded but response format is unexpected.");
+            return;
+          }
+
+          // persist token and user for other parts of the app / AuthContext
+          localStorage.setItem("token", token);
+          localStorage.setItem("user", JSON.stringify(userObj));
+
+          // navigate according to role
+          if (userObj.role === "freelancer") navigate("/freelancer-home");
+          else navigate("/");
+        }
+      } catch (err) {
+        console.error("Login error:", err);
+        setError("Server error. Please try again later.");
       }
     }
     setValidated(true);
@@ -115,14 +147,27 @@ const Login = () => {
               Password must be at least 6 characters long.
             </div>
           </div>
-          <button type="submit" className="btn btn-primary w-100">
+          <button
+            type="submit"
+            className="btn w-100"
+            style={{
+              background: "#ffc107",
+              borderColor: "#ffc107",
+              color: "#000",
+              fontWeight: 600,
+            }}
+          >
             Login
           </button>
           <div className="text-center mt-3">
-            <a href="#">Forgot Password?</a> | <Link to="/signup">Sign Up</Link>
+            <a href="#" style={{ color: "#0a0b0b", fontWeight: 500, textDecoration: "none" }}>
+              Forgot Password?
+            </a>{" "}
+            | <Link to="/signup">Sign Up</Link>
           </div>
         </form>
       </div>
+
       <style>
         {`
           @keyframes fadeIn {
