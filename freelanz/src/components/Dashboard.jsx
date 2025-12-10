@@ -1,184 +1,340 @@
-import React, { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import Header from "./Header";
-import "../styles/dashboard.css";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "../styles/dashboard-dark.css"; // dark dashboard styles
+import "bootstrap-icons/font/bootstrap-icons.css";
 
-const Dashboard = () => {
-  const { user } = useAuth();
-  const [dashboardData, setDashboardData] = useState({
+function Dashboard() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const [data, setData] = useState({
     fullName: user?.fullName || "",
     email: user?.email || "",
     role: user?.role || "",
-    assignedWord: "",
+    assignedWord: "No project assigned",
     progress: 0,
-    status: "In Progress",
+    status: "N/A",
     totalProjects: 0,
     completedProjects: 0,
   });
 
-  // Fetch dashboard data on mount
-  useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          console.error("No token found in localStorage");
-          return;
-        }
-        const response = await fetch("http://localhost:5000/api/dashboard", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setDashboardData((prev) => ({
-            ...prev,
-            ...data,
-            fullName: user?.fullName || data.fullName || "Not provided",
-            email: user?.email || data.email || "Not provided",
-            role: user?.role || data.role || "Not specified",
-          }));
-        } else {
-          console.error("Failed to fetch dashboard data:", data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching dashboard data:", error);
-      }
-    };
-    fetchDashboardData();
-  }, [user]);
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  // Update project status
-  const updateProjectStatus = async (newStatus, newProgress) => {
+  // Fetch dashboard from backend
+  const fetchDashboard = async () => {
+    setLoading(true);
+    setError("");
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        console.error("No token found in localStorage");
+        setError("Not authenticated");
+        setLoading(false);
         return;
       }
-      const response = await fetch("http://localhost:5000/api/project/status", {
+      const res = await fetch("/api/dashboard", {
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.message || "Failed to load dashboard");
+      } else {
+        setData((prev) => ({
+          ...prev,
+          fullName: json.fullName || prev.fullName,
+          email: json.email || prev.email,
+          role: json.role || prev.role,
+          assignedWord: json.assignedWord ?? prev.assignedWord,
+          progress: Number(json.progress ?? prev.progress),
+          status: json.status ?? prev.status,
+          totalProjects: json.totalProjects ?? prev.totalProjects,
+          completedProjects: json.completedProjects ?? prev.completedProjects,
+        }));
+      }
+    } catch (err) {
+      console.error("Dashboard fetch error:", err);
+      setError("Server error while loading dashboard");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboard();
+    // eslint-disable-next-line
+  }, [user]);
+
+  // Update project status (In Progress or Completed)
+  const updateProjectStatus = async (status, progressValue) => {
+    setActionLoading(true);
+    setError("");
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("/api/project/status", {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ status: newStatus, progress: newProgress }),
+        body: JSON.stringify({ status, progress: progressValue }),
       });
-      const data = await response.json();
-      if (response.ok) {
-        setDashboardData((prev) => ({
-          ...prev,
-          status: data.project.status,
-          progress: data.project.progress,
-          completedProjects: data.user.completedProjects,
-        }));
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.message || "Failed to update status");
       } else {
-        console.error("Failed to update project status:", data.message);
+        // update the UI with returned values (server returns project and user)
+        setData((prev) => ({
+          ...prev,
+          status: json.project?.status ?? status,
+          progress: json.project?.progress ?? progressValue,
+          totalProjects: json.user?.totalProjects ?? prev.totalProjects,
+          completedProjects: json.user?.completedProjects ?? prev.completedProjects,
+        }));
       }
-    } catch (error) {
-      console.error("Error updating project status:", error);
+    } catch (err) {
+      console.error("Update project error:", err);
+      setError("Server error while updating project");
+    } finally {
+      setActionLoading(false);
     }
   };
 
+  // Quick action handlers
+  const handleGoToProfile = () => navigate(`/profile/${user?.id}`);
+  const handleEditProfile = () => navigate(`/profile/edit`);
+  const handleAvailableJobs = () => navigate("/available-jobs");
+  const handlePostJob = () => navigate("/post-job");
+
   return (
-    <>
-      <Header />
-      <section className="dashboard py-5" style={{ paddingTop: "120px", paddingBottom: "80px" }}>
-        <div className="container">
-          {/* Welcome Section */}
-          <div className="row justify-content-center text-center mb-5">
-            <div className="col-lg-8">
-              <h2 className="display-4 font-weight-bold">
-                Welcome, {dashboardData.fullName || "User"}!
-              </h2>
-              <p className="lead">
-                {dashboardData.role === "freelancer"
-                  ? "Manage your assigned tasks and track progress."
-                  : "Monitor your projects and their progress."}
-              </p>
-            </div>
+    <div className="dashboard-dark-root">
+      <div className="dashboard-container">
+        <div className="dashboard-header">
+          <div>
+            <h2 className="title">Dashboard</h2>
+            <p className="subtitle">Welcome back, {data.fullName || "Freelancer"} — here's your workspace.</p>
           </div>
 
-          {/* Personal Details Section */}
-          <div className="row justify-content-center mb-5">
-            <div className="col-lg-6">
-              <div className="personal-details p-4">
-                <h3 className="mb-4">Personal Details</h3>
-                <p><strong>Name:</strong> {dashboardData.fullName || "Not provided"}</p>
-                <p><strong>Email:</strong> {dashboardData.email || "Not provided"}</p>
-                <p><strong>Role:</strong> {dashboardData.role || "Not specified"}</p>
+          <div className="header-actions">
+            <button className="btn btn-outline-light me-2" onClick={handleGoToProfile}>
+              <i className="bi bi-person-lines-fill me-1"></i> My Profile
+            </button>
+            <button className="btn btn-outline-light me-2" onClick={handleEditProfile}>
+              <i className="bi bi-pencil-square me-1"></i> Edit Profile
+            </button>
+            <button className="btn btn-outline-light me-2" onClick={handleAvailableJobs}>
+              <i className="bi bi-briefcase me-1"></i> Available Jobs
+            </button>
+            <button
+  className="btn"
+  style={{ backgroundColor: "#ffc107", borderColor: "#ffc107", color: "#000" }}
+  onClick={handlePostJob}
+>
+  <i className="bi bi-plus-lg me-1"></i> Post Job
+</button>
+          </div>
+        </div>
+
+        {error && <div className="alert alert-danger mt-3">{error}</div>}
+
+        <div className="dashboard-grid">
+          {/* Left column - Profile & Progress */}
+          <div className="card dark-card profile-card">
+            <div className="card-body">
+              <div className="profile-top">
+                <div className="avatar">
+                  {user?.profilePic ? (
+                    <img
+                      src={user.profilePic.startsWith("/") ? window.location.origin + user.profilePic : user.profilePic}
+                      alt={data.fullName}
+                    />
+                  ) : (
+                    <div className="avatar-initial">{(data.fullName || "U").charAt(0)}</div>
+                  )}
+                </div>
+                <div className="profile-info">
+                  <h4>{data.fullName}</h4>
+                  <p className="muted">{data.email}</p>
+                  <div className="role-chip">{data.role}</div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          {/* Assigned Task and Progress Section */}
-          <div className="row justify-content-center mb-5">
-            <div className="col-lg-6">
-              <div className="word-progress p-4">
-                <h3 className="mb-4">Assigned Task & Progress</h3>
-                {dashboardData.assignedWord === "No project assigned" ? (
-                  <p>No project assigned yet. Apply for jobs to get started!</p>
-                ) : (
-                  <>
-                    <p><strong>Assigned Task:</strong> {dashboardData.assignedWord}</p>
-                    <p><strong>Progress:</strong> {dashboardData.progress}%</p>
-                    <div className="progress-bar">
-                      <div
-                        className="progress-fill"
-                        style={{ width: `${dashboardData.progress}%` }}
-                      ></div>
-                    </div>
-                    <div className="status-buttons mt-3">
+              <hr className="divider" />
+
+              <div className="stat-row">
+                <div className="stat">
+                  <div className="stat-value">{data.totalProjects}</div>
+                  <div className="stat-label">Projects</div>
+                </div>
+                <div className="stat">
+                  <div className="stat-value">{data.completedProjects}</div>
+                  <div className="stat-label">Completed</div>
+                </div>
+                <div className="stat">
+                  <div className="stat-value">{data.status === "Completed" ? "Done" : (data.status || "N/A")}</div>
+                  <div className="stat-label">Status</div>
+                </div>
+              </div>
+
+              <div className="progress-section">
+                <h6 className="small-title mb-2">Active Project</h6>
+                <div className="project-title">{data.assignedWord}</div>
+
+                <div className="progress-wrapper">
+                  <div className="circular-progress" data-progress={data.progress}>
+                    <svg viewBox="0 0 36 36" className="circular-chart">
+                      <path className="circle-bg"
+                        d="M18 2.0845
+                           a 15.9155 15.9155 0 0 1 0 31.831
+                           a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                      <path className="circle"
+                        strokeDasharray={`${data.progress}, 100`}
+                        d="M18 2.0845
+                           a 15.9155 15.9155 0 0 1 0 31.831
+                           a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                      <text x="18" y="20.35" className="percentage">{data.progress}%</text>
+                    </svg>
+                  </div>
+
+                  <div className="progress-actions">
+                    <div className="mb-2"><strong>{data.progress}%</strong> complete</div>
+                    <div className="btn-group">
                       <button
-                        className="btn btn-primary mr-2"
-                        onClick={() => updateProjectStatus("In Progress", dashboardData.progress)}
-                        disabled={dashboardData.status === "In Progress"}
+                        className="btn btn-sm btn-outline-light"
+                        disabled={actionLoading || data.status === "In Progress"}
+                        onClick={() => updateProjectStatus("In Progress", Math.max(0, data.progress))}
                       >
-                        Mark as In Progress
+                        Mark In Progress
                       </button>
+
                       <button
-                        className="btn btn-success"
+                        className="btn btn-sm btn-success"
+                        disabled={actionLoading || data.status === "Completed"}
                         onClick={() => updateProjectStatus("Completed", 100)}
-                        disabled={dashboardData.status === "Completed"}
                       >
-                        Mark as Completed
+                        Mark Completed
                       </button>
                     </div>
-                  </>
-                )}
+                  </div>
+                </div>
               </div>
+              
+                  {/* FREELANCER PROJECT LIST */}
+{data.role === "freelancer" && (
+  <div className="card dark-card mt-4 p-3">
+    <h5 className="mb-3">Your Projects</h5>
+
+    {data.projects && data.projects.length > 0 ? (
+      <ul className="list-group">
+        {data.projects.map((proj, index) => (
+          <li
+            key={index}
+            className="list-group-item bg-transparent text-light border-secondary mb-2 rounded"
+          >
+            <strong>{proj.assignedWord}</strong> <br />
+            <span>Status: {proj.status}</span> <br />
+            <span>Progress: {proj.progress}%</span>
+
+            <div className="progress mt-2" style={{ height: "6px" }}>
+              <div
+                className="progress-bar"
+                style={{
+                  width: `${proj.progress}%`,
+                  backgroundColor: "#ffc107",
+                }}
+              ></div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p className="muted">No projects assigned yet.</p>
+    )}
+  </div>
+)}
+
+
             </div>
           </div>
 
-          {/* Project Count Section */}
-          <div className="row justify-content-center mb-5">
-            <div className="col-lg-6">
-              <div className="project-count p-4">
-                <h3 className="mb-4">Project Statistics</h3>
-                <p><strong>Total Projects Assigned:</strong> {dashboardData.totalProjects}</p>
-                <p><strong>Projects Completed:</strong> {dashboardData.completedProjects}</p>
+          {/* Right column - Activity / Quick stats */}
+          <div className="right-column">
+            <div className="card dark-card quick-actions">
+              <div className="card-body">
+                <h5 className="card-title">Quick Actions</h5>
+                <div className="actions-grid">
+                  <button className="action-box" onClick={handleAvailableJobs}>
+                    <i className="bi bi-search"></i>
+                    <div>Browse Jobs</div>
+                  </button>
+                  <button className="action-box" onClick={handlePostJob}>
+                    <i className="bi bi-file-earmark-plus"></i>
+                    <div>Post a Job</div>
+                  </button>
+                  <button className="action-box" onClick={handleGoToProfile}>
+                    <i className="bi bi-person"></i>
+                    <div>My Profile</div>
+                  </button>
+                  <button className="action-box" onClick={handleEditProfile}>
+                    <i className="bi bi-pencil"></i>
+                    <div>Edit Profile</div>
+                  </button>
+                </div>
               </div>
             </div>
+
+            <div className="card dark-card activity-card mt-3">
+              <div className="card-body">
+                <h5 className="card-title">Recent Activity</h5>
+                <ul className="activity-list">
+                  <li>
+                    <div className="activity-dot" />
+                    <div className="activity-text">Profile updated</div>
+                    <div className="activity-time">2 days ago</div>
+                  </li>
+                  <li>
+                    <div className="activity-dot" />
+                    <div className="activity-text">Proposal approved</div>
+                    <div className="activity-time">5 days ago</div>
+                  </li>
+                  <li>
+                    <div className="activity-dot" />
+                    <div className="activity-text">New job posted in WebDev</div>
+                    <div className="activity-time">6 days ago</div>
+                  </li>
+                </ul>
+                <Link to="/jobs" className="small-link">View all activity</Link>
+              </div>
+            </div>
+
+            <div className="card dark-card help-card mt-3">
+              <div className="card-body">
+                <h6>Need help?</h6>
+                <p className="muted small">Contact support or check the documentation to get started quickly.</p>
+                <div className="d-flex gap-2">
+                  <Link to="/contact" className="btn btn-outline-light btn-sm">Contact</Link>
+                  <button
+  className="btn btn-sm"
+  style={{ backgroundColor: "#ffc107", borderColor: "#ffc107", color: "#000" }}
+  onClick={() => alert("Feature coming soon")}
+>
+  Get Support
+</button>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-      </section>
 
-      {/* Footer Section */}
-      <footer className="footer">
-        <div className="container text-center">
-          <p>&copy; 2025 Freelanz. All Rights Reserved.</p>
-          <p>
-            Email: <a href="mailto:freelanz@gmail.com">freelanz@gmail.com</a> | Phone: <a href="tel:+918632497610">+91 8632497610</a>
-          </p>
+        {/* Footer small */}
+        <div className="dashboard-footer text-center">
+          <small className="muted">© {new Date().getFullYear()} Freelanz — Built with ❤️</small>
         </div>
-      </footer>
-    </>
+      </div>
+    </div>
   );
-};
+}
 
 export default Dashboard;

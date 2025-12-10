@@ -23,6 +23,10 @@ import SubmitProposal from "./components/SubmitProposal";
 import FreelancerHome from "./components/FreelancerHome";
 import AvailableJobs from "./components/AvailableJobs";
 
+// ⭐ New components for profile system
+import UserProfile from "./components/UserProfile";
+import EditProfile from "./components/EditProfile";
+
 import "./styles/portfolio.css";
 import "./styles/stats.css";
 import "./styles/testimonials.css";
@@ -63,19 +67,28 @@ function App() {
             }}
           >
             <Routes>
+
+              {/* AUTH ROUTES */}
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+
+              {/* HOME */}
               <Route path="/" element={<Home />} />
+
+              {/* FREELANCER HOME */}
               <Route path="/freelancer-home" element={
                 <ProtectedRoute role="freelancer">
                   <FreelancerHome />
                 </ProtectedRoute>
               } />
+
               <Route path="/available-jobs" element={
                 <ProtectedRoute role="freelancer">
                   <AvailableJobs />
                 </ProtectedRoute>
               } />
+
+              {/* CONTACT / SERVICES */}
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/webdev" element={<WebDevelopment />} />
               <Route path="/graphics" element={<GraphicDesign />} />
@@ -86,6 +99,8 @@ function App() {
               <Route path="/top-freelancers" element={<TopFreelancers />} />
               <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/services" element={<Services />} />
+
+              {/* HIRE FREELANCER */}
               <Route
                 path="/freelancers"
                 element={
@@ -94,6 +109,8 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              {/* POST JOB */}
               <Route
                 path="/post-job"
                 element={
@@ -102,6 +119,8 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              {/* SUBMIT PROPOSAL */}
               <Route
                 path="/submit-proposal"
                 element={
@@ -110,6 +129,8 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              {/* DASHBOARD */}
               <Route
                 path="/dashboard"
                 element={
@@ -118,9 +139,31 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              {/* ⭐ NEW PROFILE ROUTES */}
+              <Route
+                path="/profile/:id"
+                element={
+                  <ProtectedRoute>
+                    <UserProfile />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/profile/edit"
+                element={
+                  <ProtectedRoute>
+                    <EditProfile />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* 404 FALLBACK */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
+
           <Footer style={{ flexShrink: 0, zIndex: 0 }} />
         </div>
       </Router>
