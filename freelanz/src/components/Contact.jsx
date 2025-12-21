@@ -3,7 +3,7 @@ import "../styles/contact.css";
 
 const Contact = () => {
   return (
-    <section id="contact" className="contact-section py-5 mt-5">
+    <section id="contact" className="contact-section py-5 mt-5" style={{ color: "#000000" }}>
       <div className="container">
 
         {/* Section Title */}
