@@ -5,12 +5,6 @@
   background-color: #f0e8e8;
 }
 
-.contact {
-  background-color: #f0e8e8;
-  padding: 60px 0;
-  width: 100%;
-}
-
 /* ================= SECTION TITLE ================= */
 
 .section-title {
@@ -21,15 +15,12 @@
 .section-title h2 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #111827; /* DARK for contrast */
-  margin-bottom: 10px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .section-title p {
   font-size: 1.1rem;
-  color: #374151; /* Dark gray */
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 /* ================= LAYOUT ================= */
@@ -78,24 +69,15 @@
 .more-contact-info h4 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #111827; /* Almost black */
-  margin-bottom: 15px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .contact-info p,
 .more-contact-info p {
   font-size: 1rem;
-  color: #1f2933; /* FIXED faded text */
   line-height: 1.6;
   margin-bottom: 10px;
-  font-family: 'Roboto', sans-serif;
-}
-
-.contact-info p strong,
-.more-contact-info p strong {
-  color: #111827;
-  font-weight: 600;
+  font-family: "Roboto", sans-serif;
 }
 
 /* ================= FORM ================= */
@@ -107,32 +89,34 @@
 .form-group label {
   display: block;
   font-size: 1rem;
-  color: #111827;
   margin-bottom: 5px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
 }
 
-.form-input {
+.form-input,
+.contact-section input,
+.contact-section textarea {
   width: 100%;
   padding: 10px;
   border: 1px solid #d1d5db;
   border-radius: 5px;
   font-size: 1rem;
-  font-family: 'Roboto', sans-serif;
-  color: #111827;
+  font-family: "Roboto", sans-serif;
   background-color: #ffffff;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-input:focus {
+.contact-section input:focus,
+.contact-section textarea:focus {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
 }
 
-.form-input::placeholder {
-  color: #6b7280;
+.contact-section input::placeholder,
+.contact-section textarea::placeholder {
+  color: #555555;
 }
 
 /* ================= BUTTON ================= */
@@ -146,7 +130,7 @@
   color: #ffffff;
   font-size: 1rem;
   font-weight: 600;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -175,42 +159,14 @@
   }
 }
 
-/* ========== FORCE PURE BLACK TEXT (OVERRIDE BOOTSTRAP) ========== */
+/* ================= FINAL OVERRIDE (IMPORTANT) ================= */
+/* This ensures ALL text is black, no matter Bootstrap/theme */
 
+.contact-section,
 .contact-section * {
   color: #000000 !important;
 }
 
-/* Keep headings bold and black */
-.contact-section h1,
-.contact-section h2,
-.contact-section h3,
-.contact-section h4,
-.contact-section h5,
-.contact-section h6 {
-  color: #000000 !important;
-}
-
-/* Strong text */
-.contact-section strong {
-  color: #000000 !important;
-  font-weight: 700;
-}
-
-/* Links (Twitter, Instagram) */
 .contact-section a {
-  color: #000000 !important;
   text-decoration: underline;
-}
-
-/* Form inputs text */
-.contact-section input,
-.contact-section textarea {
-  color: #000000 !important;
-}
-
-/* Placeholder slightly gray but readable */
-.contact-section input::placeholder,
-.contact-section textarea::placeholder {
-  color: #555555 !important;
 }
