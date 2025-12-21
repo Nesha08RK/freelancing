@@ -1,8 +1,17 @@
+/* ================= CONTACT SECTION ================= */
+
+.contact-section {
+  padding-top: 100px; /* Avoid overlap with fixed navbar */
+  background-color: #f0e8e8;
+}
+
 .contact {
-  background-color: #f0e8e8; 
+  background-color: #f0e8e8;
   padding: 60px 0;
   width: 100%;
 }
+
+/* ================= SECTION TITLE ================= */
 
 .section-title {
   text-align: center;
@@ -12,16 +21,18 @@
 .section-title h2 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #333;
+  color: #111827; /* DARK for contrast */
   margin-bottom: 10px;
   font-family: 'Poppins', sans-serif;
 }
 
 .section-title p {
   font-size: 1.1rem;
-  color: #666;
+  color: #374151; /* Dark gray */
   font-family: 'Roboto', sans-serif;
 }
+
+/* ================= LAYOUT ================= */
 
 .contact-content {
   max-width: 1200px;
@@ -42,12 +53,15 @@
   max-width: 380px;
 }
 
+/* ================= CARDS ================= */
+
 .contact-info,
 .contact-form,
 .more-contact-info {
   background: #ffffff;
   border-radius: 10px;
   padding: 25px;
+  border: 1px solid #e5e7eb;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -64,7 +78,7 @@
 .more-contact-info h4 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: #111827; /* Almost black */
   margin-bottom: 15px;
   font-family: 'Poppins', sans-serif;
 }
@@ -72,7 +86,7 @@
 .contact-info p,
 .more-contact-info p {
   font-size: 1rem;
-  color: #666;
+  color: #1f2933; /* FIXED faded text */
   line-height: 1.6;
   margin-bottom: 10px;
   font-family: 'Roboto', sans-serif;
@@ -80,9 +94,11 @@
 
 .contact-info p strong,
 .more-contact-info p strong {
-  color: #333;
-  font-weight: 500;
+  color: #111827;
+  font-weight: 600;
 }
+
+/* ================= FORM ================= */
 
 .form-group {
   margin-bottom: 20px;
@@ -91,7 +107,7 @@
 .form-group label {
   display: block;
   font-size: 1rem;
-  color: #333;
+  color: #111827;
   margin-bottom: 5px;
   font-family: 'Roboto', sans-serif;
   font-weight: 500;
@@ -100,40 +116,47 @@
 .form-input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #d1d5db;
   border-radius: 5px;
   font-size: 1rem;
   font-family: 'Roboto', sans-serif;
+  color: #111827;
+  background-color: #ffffff;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
 }
 
 .form-input::placeholder {
-  color: #aaa;
+  color: #6b7280;
 }
+
+/* ================= BUTTON ================= */
 
 .submit-btn {
   width: 100%;
   padding: 12px;
-  background-color: #007bff;
+  background-color: #2563eb;
   border: none;
   border-radius: 5px;
-  color: #fff;
+  color: #ffffff;
   font-size: 1rem;
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .submit-btn:hover {
-  background-color: #0056b3;
+  background-color: #1e40af;
+  transform: translateY(-1px);
 }
+
+/* ================= RESPONSIVE ================= */
 
 @media (max-width: 768px) {
   .col-md-4 {
@@ -150,13 +173,4 @@
   .section-title h2 {
     font-size: 2rem;
   }
-}
-.contact-section {
-  padding-top: 100px; /* Avoid overlap with fixed navbar */
-  background-color: #f0e8e8; /* Light background for contrast */
-}
-
-.section-title {
-  margin-bottom: 20px;
-  color: #333;
 }
