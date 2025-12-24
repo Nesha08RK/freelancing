@@ -174,3 +174,35 @@
     font-size: 2rem;
   }
 }
+
+/* ================= FORCE BLACK TEXT (BOOTSTRAP OVERRIDE) ================= */
+
+.contact-section,
+.contact-section p,
+.contact-section h2,
+.contact-section h4,
+.contact-section h5,
+.contact-section li,
+.contact-section label {
+  color: #111827 !important;
+}
+
+/* Override Bootstrap link color */
+.contact-section a {
+  color: #111827 !important;
+  text-decoration: none;
+}
+
+.contact-section a:hover {
+  text-decoration: underline;
+}
+
+/* Fix bg-light text color */
+.contact-section .bg-light {
+  color: #111827 !important;
+}
+
+/* Fix form control text color */
+.contact-section .form-control {
+  color: #111827 !important;
+}
