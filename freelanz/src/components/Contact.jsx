@@ -8,7 +8,7 @@ const Contact = () => {
         {/* Section Title */}
         <div className="text-center mb-5" data-aos="fade-up">
           <h2 className="section-title display-5 fw-bold">Contact Us</h2>
-          <p className="text-dark">We're here to help! Reach out to us with any questions or inquiries.</p>
+          <p className="text-muted">We're here to help! Reach out to us with any questions or inquiries.</p>
         </div>
 
         {/* 3 Column Layout */}
