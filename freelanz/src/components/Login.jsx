@@ -11,7 +11,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState("");
-  const { user } = useAuth();
+
+  const { user, setUser } = useAuth(); // <-- IMPORTANT fix
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,8 +52,12 @@ const Login = () => {
             return;
           }
 
+          // store session
           localStorage.setItem("token", token);
           localStorage.setItem("user", JSON.stringify(userObj));
+
+          // 🔥 FIX — triggers redirect
+          setUser(userObj);
 
           if (userObj.role === "freelancer") navigate("/freelancer-home");
           else navigate("/");
@@ -156,7 +161,6 @@ const Login = () => {
           </div>
         </form>
       </div>
-
       <style>
         {`
           @keyframes fadeIn {
