@@ -22,7 +22,10 @@ fs.mkdirSync(uploadsDir, { recursive: true });
 // ======================
 // ❗ FIX APPLIED: allow your deployed frontend domain
 app.use(cors({
-  origin: "https://freelancing-marketplace.vercel.app",
+  origin: [
+    "https://freelancing-marketplace-f0i8m5a77-nesha-r-ks-projects.vercel.app", // current deployment
+    "https://freelancing-marketplace.vercel.app" // permanent production URL
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
