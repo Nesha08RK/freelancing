@@ -2,29 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/home.css";
-import API_BASE_URL from "../config";
 import { useAuth } from "../context/AuthContext";
 
 const BACKEND = "https://freelancing-marketplace-icrk.onrender.com";
-import API_BASE_URL from "../config";
-
-const res = await fetch(`${API_BASE_URL}/api/login`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ email, password }),
-});
-
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState("");
-  const { user } = useAuth(); // we keep this so UI reacts to auth changes elsewhere
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect after login once user is set (if auth context sets it)
     if (user) {
       if (user.role === "freelancer") navigate("/freelancer-home");
       else navigate("/");
@@ -35,24 +25,25 @@ const Login = () => {
     e.preventDefault();
     setError("");
     const form = e.currentTarget;
+
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
       try {
-        // call production backend directly
         const res = await fetch(`${BACKEND}/api/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: email.trim().toLowerCase(), password: password }),
+          body: JSON.stringify({
+            email: email.trim().toLowerCase(),
+            password: password,
+          }),
         });
 
         const json = await res.json();
 
         if (!res.ok) {
-          // show server-provided message if available
           setError(json.message || "Invalid credentials. Please try again.");
         } else {
-          // expected response: { token, user: { id, fullName, email, role } }
           const { token, user: userObj } = json;
 
           if (!token || !userObj) {
@@ -60,11 +51,9 @@ const Login = () => {
             return;
           }
 
-          // persist token and user for other parts of the app / AuthContext
           localStorage.setItem("token", token);
           localStorage.setItem("user", JSON.stringify(userObj));
 
-          // navigate according to role
           if (userObj.role === "freelancer") navigate("/freelancer-home");
           else navigate("/");
         }

@@ -17,8 +17,16 @@ const app = express();
 const uploadsDir = path.join(__dirname, "uploads", "profilePics");
 fs.mkdirSync(uploadsDir, { recursive: true });
 
-// Middleware
-app.use(cors());
+// ======================
+//       MIDDLEWARE
+// ======================
+// ❗ FIX APPLIED: allow your deployed frontend domain
+app.use(cors({
+  origin: "https://freelancing-marketplace-21p0860yb-nesha-r-ks-projects.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -37,7 +45,7 @@ mongoose
   .catch((err) => console.error("MongoDB Connection Error:", err));
 
 // ======================
-//       USER MODEL (updated for profile fields)
+//       USER MODEL
 // ======================
 const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
@@ -45,10 +53,9 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ["user", "freelancer"], default: "user" },
 
-  // Profile fields
   bio: { type: String, default: "" },
   skills: { type: [String], default: [] },
-  profilePic: { type: String, default: "" }, // store URL/path like /uploads/profilePics/filename.jpg
+  profilePic: { type: String, default: "" },
   location: { type: String, default: "" },
   portfolioLinks: { type: [String], default: [] },
   rating: { type: Number, default: 0 },
@@ -132,7 +139,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // limit: 5MB
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = /jpeg|jpg|png|gif/;
     const ext = path.extname(file.originalname).toLowerCase();
@@ -193,7 +200,6 @@ app.post("/api/signup", async (req, res) => {
 
     await user.save();
 
-    // Default project
     const project = new Project({
       userId: user._id,
       assignedWord: "Sample Project",
@@ -360,7 +366,6 @@ app.put("/api/proposals/:id", verifyToken, async (req, res) => {
         { status: "ignored" }
       );
 
-      // Create project for freelancer
       const existingProject = await Project.findOne({
         userId: proposal.freelancer,
         jobId: proposal.jobId,
@@ -510,7 +515,6 @@ app.post("/api/upload/profile-pic", verifyToken, upload.single("profilePic"), (r
   try {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
-    // Return the public path to be saved in user's profile
     const imageUrl = `/uploads/profilePics/${req.file.filename}`;
     res.json({ imageUrl });
   } catch (error) {
