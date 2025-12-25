@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/home.css";
 import { useAuth } from "../context/AuthContext";
-import API_BASE_URL from "../config";   // ✅ added
+import API_BASE_URL from "../config"; // <--- BASE URL used for backend
 
 const Signup = () => {
   const [fullName, setFullName] = useState("");
@@ -42,29 +42,29 @@ const Signup = () => {
       console.log("Attempting signup with:", { fullName, email: normalizedEmail, password, role });
 
       try {
-        // 🔄 changed only this URL
+        // ⬇️ **THIS is the only important change**
         const signupResponse = await fetch(`${API_BASE_URL}/api/signup`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ fullName, email: normalizedEmail, password, role }),
         });
 
         const signupData = await signupResponse.json();
         if (!signupResponse.ok) {
-          throw new Error(signupData.message || 'Signup failed');
+          throw new Error(signupData.message || "Signup failed");
         }
 
+        // login after signup
         const success = await login(normalizedEmail, password);
         console.log("Signup and login success:", success);
 
         if (success) {
-          const token = localStorage.getItem('token');
-          console.log("Stored token:", token);
-
-          if (role === 'freelancer') navigate("/freelancer-home");
+          if (role === "freelancer") navigate("/freelancer-home");
           else navigate("/");
         } else {
-          setErrors({ submit: "Failed to log in after signup. Please try logging in manually." });
+          setErrors({
+            submit: "Signed up successfully but login failed. Try logging in manually.",
+          });
         }
       } catch (err) {
         console.error("Signup error details:", err.message || err);
@@ -74,14 +74,6 @@ const Signup = () => {
       }
     }
     setValidated(true);
-  };
-
-  const checkPasswordStrength = (pass) => {
-    if (pass.length < 8) {
-      setErrors((prev) => ({ ...prev, password: "Password must be at least 8 characters." }));
-    } else {
-      setErrors((prev) => ({ ...prev, password: "" }));
-    }
   };
 
   const containerStyle = {
@@ -113,11 +105,6 @@ const Signup = () => {
     color: "#d68a33",
   };
 
-  const subHeadingStyle = {
-    fontSize: "1.5rem",
-    marginBottom: "20px",
-  };
-
   const errorStyle = {
     display: "block",
     marginTop: "5px",
@@ -133,19 +120,89 @@ const Signup = () => {
           Welcome to Freelanz
         </h1>
         <div className="signup-container" style={formStyle}>
-          <h2 className="text-center" style={subHeadingStyle}>
-            Sign Up
-          </h2>
+          <h2 className="text-center mb-3">Sign Up</h2>
+
           {errors.submit && <div className="alert alert-danger">{errors.submit}</div>}
+
           <form
             id="signupForm"
             noValidate
             onSubmit={handleSubmit}
             className={validated ? "was-validated" : ""}
           >
-            {/* unchanged fields */}
-            ...
+            <div className="mb-3">
+              <label className="form-label">Full Name</label>
+              <input
+                type="text"
+                className="form-control"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+              {errors.fullName && <span style={errorStyle}>{errors.fullName}</span>}
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                className="form-control"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              {errors.email && <span style={errorStyle}>{errors.email}</span>}
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={8}
+              />
+              {errors.password && <span style={errorStyle}>{errors.password}</span>}
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Confirm Password</label>
+              <input
+                type="password"
+                className="form-control"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              {errors.confirmPassword && <span style={errorStyle}>{errors.confirmPassword}</span>}
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Role</label>
+              <select
+                className="form-control"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                required
+              >
+                <option value="user">User (Employer)</option>
+                <option value="freelancer">Freelancer</option>
+              </select>
+              {errors.role && <span style={errorStyle}>{errors.role}</span>}
+            </div>
+
+            <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+              {loading ? "Signing up..." : "Sign Up"}
+            </button>
           </form>
+
+          <div className="text-center mt-3">
+            <p>
+              Already have an account? <Link to="/login">Login</Link>
+            </p>
+          </div>
         </div>
       </div>
     </>
