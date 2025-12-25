@@ -27,22 +27,27 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async (email, password) => {
-    try {
-      const response = await axios.post('http://localhost:5000/api/login', {
-        email,
-        password,
-      });
-      const { token, user } = response.data;
-      localStorage.setItem('token', token); // Store token
-      localStorage.setItem('user', JSON.stringify(user)); // Store the full user object
-      setUser(user); // Update user state with the full user object
-      return true;
-    } catch (err) {
-      console.error('Login error:', err.response?.data?.message || err.message);
-      return false;
-    }
-  };
+const login = async (email, password) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/api/login`,
+      { email, password },
+      { headers: { "Content-Type": "application/json" } }
+    );
+
+    const { token, user } = response.data;
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+    setUser(user);
+
+    return true;
+  } catch (err) {
+    console.error("Login error:", err.response?.data?.message || err.message);
+    return false;
+  }
+};
+
 
   const logout = () => {
     localStorage.removeItem('token');
